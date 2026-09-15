@@ -4,13 +4,31 @@ def calculate_deposit(amount, interest_year, term):
     interest_month = (interest_year / 100) / 12
     for i in range(0, term):
         amount += amount * interest_month
-        print("Month: ",i+1, " | ", amount)
+        print(f"Month: {i+1} | {amount:.2f}")
 
-    print("\nTotal:", amount)
+    print(f"\nTotal: {amount:.2f}")
+
+def read_number(prompt, cast=float):
+    while True:
+        try:
+            value = cast(input(prompt))
+        except ValueError:
+            if cast == int:
+                print("Please enter a whole number")
+                continue
+            print("Please enter a number")
+            continue
+
+        if value > 0:
+            return value
+        else:
+            print("Enter only numbers above 0")
+            continue
+
 def main():
-    amount = float(input("Enter deposit amount: "))
-    interest_year = int(input("Enter interest rate (% annual): "))
-    term = int(input("Enter deposit term (months): "))
+    amount = read_number("Enter the amount to be deposited: ")
+    interest_year = read_number("Enter interest rate (% annual): ")
+    term = read_number("Enter deposit term (months): ", int)
 
     calculate_deposit(amount, interest_year, term)
 
