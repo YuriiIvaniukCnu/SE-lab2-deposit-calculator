@@ -1,3 +1,5 @@
+from decimal import Decimal, InvalidOperation
+
 def calculate_deposit(amount, interest_year, term):
     print(" ")
 
@@ -8,11 +10,16 @@ def calculate_deposit(amount, interest_year, term):
 
     print(f"\nTotal: {amount:.2f}")
 
-def read_number(prompt, cast=float):
+def read_number(prompt, cast=Decimal, default=None):
     while True:
+        raw = input(prompt)
+
+        if not raw and default is not None:
+            return default
+
         try:
-            value = cast(input(prompt))
-        except ValueError:
+            value = cast(raw)
+        except (ValueError, InvalidOperation):
             if cast == int:
                 print("Please enter a whole number")
                 continue
@@ -28,7 +35,7 @@ def read_number(prompt, cast=float):
 def main():
     amount = read_number("Enter the amount to be deposited: ")
     interest_year = read_number("Enter interest rate (% annual): ")
-    term = read_number("Enter deposit term (months): ", int)
+    term = read_number("Enter deposit term (months, default 24): ", int, default=24)
 
     calculate_deposit(amount, interest_year, term)
 
